@@ -1,10 +1,13 @@
 import React from 'react';
-
+import Message from '../../Message/Message';
 
 const ChatWindow = () => {
   return (
-    <div>
-
+    <div className='window'>
+      <Message />
+      <Message />
+      <Message />
+      <Message />
     </div>
   );
 };

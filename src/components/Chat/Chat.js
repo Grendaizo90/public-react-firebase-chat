@@ -4,7 +4,7 @@ import TypeForm from './TypeForm/TypeForm';
 
 const Chat = () => {
   return (
-    <div>
+    <div className='chat'>
       <ChatWindow />
       <TypeForm />
     </div>
