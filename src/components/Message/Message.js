@@ -1,8 +1,9 @@
 import React from 'react';
 
-const Message = () => {
+const Message = (props) => {
   return (
     <div className='message'>
+      {/* {props.message} */}
       Message
     </div>
   );

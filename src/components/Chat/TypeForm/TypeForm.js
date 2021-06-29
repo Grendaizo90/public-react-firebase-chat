@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const TypeForm = () => {
-  const [text, updateText] = useState('');
-
+const TypeForm = (props) => {
+  // console.log(props.text);
+  
   return (
     <div className='typeform'>
       <input
         className='input'
         placeholder='Type your message...'
         type='text'
-        value={text}
-        onChange={e => updateText(e.target.value)} />
+        value={props.text}
+        onChange={e => props.setText(e.target.value)} />
       <button
-        className='send'
-        type='submit'>Send</button>
+        className='sendButton'
+        type='submit'
+        onClick={() => props.sendMessage(props.text)}>Send</button>
     </div>
   );
 };
