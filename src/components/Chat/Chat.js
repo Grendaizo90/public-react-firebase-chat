@@ -1,20 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { firestore } from '../../App';
 import ChatWindow from './ChatWindow/ChatWindow';
 import TypeForm from './TypeForm/TypeForm';
 
-const Chat = (props) => {
-  
-  const sendMessage = (message) => {
-    console.log(message);
+let messages = [];
+
+
+const Chat = () => {
+  // const messagesRef = firestore.collection('messages');
+  // const query = messagesRef.orderBy('createdAt').limit(10);
+
+  // const [messages] = useCollectionData(query, {idField: 'id'});
+
+  const [text, setText] = useState('');
+
+  const handleSubmit = (e, message) => {
+    e.preventDefault();
+    let newMessage = {
+      id: messages.length + 1,
+      message: message
+    };
+    messages = [...messages, newMessage];
+    console.log(messages);
+    setText('');
   }
 
   return (
     <div className='chat'>
-      <ChatWindow />
+      <ChatWindow messages={messages} />
       <TypeForm
-        text={props.text}
-        setText={props.setText}
-        sendMessage={sendMessage} />
+        text={text}
+        setText={setText}
+        handleSubmit={handleSubmit} />
     </div>
   );
 };
