@@ -1,13 +1,11 @@
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { createContext } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { SignIn } from './components/SignIn/SignIn';
 import Navbar from './components/Navbar/Navbar';
-import Chat from './components/Chat/Chat';
+import AppRouter from './AppRouter';
 import './App.css';
 
 
@@ -29,7 +27,7 @@ export const Context = createContext(null);
 const App = () => {
 
   const [user] = useAuthState(auth);
-
+  console.log(user);
   return (
     <BrowserRouter>
       <Context.Provider value={{
@@ -38,20 +36,7 @@ const App = () => {
         firestore
       }}>
         <Navbar />
-        {user ? (
-          <Switch>
-            <Route path='/chat' exact={true} component={Chat} />
-            <Redirect to={'/chat'} />
-          </Switch>
-        )
-          :
-          (
-            <Switch>
-              <Route path='/login' exact={true} component={SignIn} />
-              <Redirect to={'/login'} />
-            </Switch>
-          )
-        }
+        <AppRouter />
       </Context.Provider>
     </BrowserRouter>
   );
