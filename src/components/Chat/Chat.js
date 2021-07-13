@@ -1,37 +1,44 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { firestore } from '../../App';
+import { Context } from '../../App';
+import firebase from 'firebase';
+import Loader from '../../extras/Loader';
 import ChatWindow from './ChatWindow/ChatWindow';
 import TypeForm from './TypeForm/TypeForm';
 
-let messages = [];
-
 
 const Chat = () => {
-  // const messagesRef = firestore.collection('messages');
-  // const query = messagesRef.orderBy('createdAt').limit(10);
+  const {auth, firestore} = useContext(Context);
+  const [user, loading] = useAuthState(auth);
 
-  // const [messages] = useCollectionData(query, {idField: 'id'});
+  const { uid, photoURL } = auth.currentUser;
 
-  const [text, setText] = useState('');
+  const messagesRef = firestore.collection('messages');
+  const query = messagesRef.orderBy('createdAt');
+  const [messages] = useCollectionData(query, {idField: 'id'});
+  // , {idField: 'id'}
 
-  const handleSubmit = (e, message) => {
-    e.preventDefault();
-    let newMessage = {
-      id: messages.length + 1,
-      message: message
-    };
-    messages = [...messages, newMessage];
-    console.log(messages);
-    setText('');
+  const handleSubmit = async (message) => {
+    const res = await messagesRef.add({
+      uid,
+      displayName: user.displayName,
+      photoURL,
+      text: message,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    return res;
+  }
+
+  if (loading) {
+    return <Loader />
   }
 
   return (
     <div className='chat'>
       <ChatWindow messages={messages} />
       <TypeForm
-        text={text}
-        setText={setText}
         handleSubmit={handleSubmit} />
     </div>
   );

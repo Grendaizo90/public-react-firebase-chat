@@ -7,6 +7,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import Navbar from './components/Navbar/Navbar';
 import AppRouter from './AppRouter';
 import './App.css';
+import Loader from './extras/Loader';
 
 
 firebase.initializeApp({
@@ -25,9 +26,12 @@ const firestore = firebase.firestore();
 export const Context = createContext(null);
 
 const App = () => {
+  const [user, loading, error] = useAuthState(auth);
 
-  const [user] = useAuthState(auth);
-  console.log(user);
+  if (loading) {
+    return <Loader />
+  }
+
   return (
     <BrowserRouter>
       <Context.Provider value={{

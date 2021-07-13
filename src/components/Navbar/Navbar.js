@@ -16,3 +16,8 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+// I'm still here
+// Kostya you are rock! I'm proud of you :)
+// Bye

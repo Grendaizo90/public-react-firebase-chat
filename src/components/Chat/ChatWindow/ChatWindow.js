@@ -1,15 +1,11 @@
 import React from 'react';
 import Message from '../../Message/Message';
 
-const ChatWindow = (props) => {
-  const allMessages = props.messages.map(m =>
-    <Message
-      key={m.id}
-      message={m.message} />
-  )
+const ChatWindow = ({ messages }) => {
+
   return (
     <div className='window'>
-      {allMessages}
+      {messages && messages.map(msg => <Message key={msg.id} message={msg} />)}
     </div>
   );
 };
